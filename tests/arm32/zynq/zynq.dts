@@ -1,0 +1,79 @@
+
+/dts-v1/;
+
+/ {
+	model = "Zynq ZC702 Development Board";
+	device_type = "guest";
+	psci_version = <2>;
+
+	aliases {
+		mem0 = &MEM0;
+	};
+
+	vcpus {
+		vcpu0 {
+			device_type = "vcpu";
+			compatible = "armv7a,cortex-a9";
+			start_pc = <0x3000000>;
+		};
+
+	};
+
+	aspace {
+		guest_irq_count = <2048>;
+
+		MEM0: mem0 {
+			manifest_type = "real";
+			address_type = "memory";
+			guest_physical_addr = <0x00000000>;
+			physical_size = <0x00000000>; /* Override this before guest creation */
+			align_order = <21>; /* Align alloced memory to 2MB */
+			device_type = "alloced_ram";
+		};
+/*CHANGED*/ /* Mete-se aqui 0x2000 no tamanho e depois o emulador do gic inicia o timer emulator tambem*/
+		priv0 {
+			manifest_type = "virtual";
+			address_type = "memory";
+			guest_physical_addr = <0xF8F00000>;
+			physical_size = <0x2000>;
+			device_type = "misc";
+			compatible = "arm,a9mpcore";
+			num_irq = <192>;
+			timer_irq = <29 30>;/*Apenas vai buscar os primeiros dois numeros, um  pro watchdog e outro pro private, 29 e 30*/
+			parent_irq = <6>;
+		};
+
+/*Caso isto não dê tentar a porta serie 0*/
+		uart0 {
+			manifest_type = "virtual";
+			address_type = "memory";
+			guest_physical_addr = <0xE0000000>;
+			physical_size = <0x1000>;
+			device_type = "serial";
+			compatible = "xlnx,xuartps";
+			interrupts = <59>;
+		};
+
+		uart1 {
+			manifest_type = "virtual";
+			address_type = "memory";
+			guest_physical_addr = <0xE0001000>;
+			physical_size = <0x1000>;
+			device_type = "serial";
+			compatible = "xlnx,xuartps";
+			interrupts = <82>;
+		};
+
+		timer@0xf8001000 {
+			manifest_type = "virtual";
+			address_type = "memory";
+			guest_physical_addr = <0xf8001000>;
+			physical_size = <0x1000>;
+			device_type = "timer";
+			compatible = "xlnx,ps7-ttc-1.00.a";
+			clock-frequency = <111111111>;
+			interrupts = <42>;
+		};
+
+	};
+};

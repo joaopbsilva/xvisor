@@ -1,0 +1,3 @@
+0x40000000 /images/arm32/vexpress-a9/firmware.bin
+0x400FF000 /images/arm32/vexpress-a9/image_FreeRTOS_SVC.bin
+0x40200000 /images/arm32/vexpress-a9/test.bin

@@ -1,0 +1,5 @@
+0x11000000 /images/arm32/sabrelite-a9/firmware.bin.patched
+0x20008000 /images/arm32/sabrelite-a9/Image
+0x20800000 /images/arm32/sabrelite-a9/ramdisk8M.image.gz
+0x21000000 /images/arm32/sabrelite-a9/zynq-zc702.dtb
+0x080FF000 /images/arm32/sabrelite-a9/cmdlist
